@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sign Up</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:110vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    radial-gradient(circle at top left,#60A5FA 0%,transparent 35%),
+    radial-gradient(circle at bottom right,#2563EB 0%,transparent 40%),
+    #F8FAFC;
+}
+
+.login-card{
+    width:400px;
+    background:#fff;
+    border-radius:28px;
+    padding:40px;
+    box-shadow:
+    0 20px 40px rgba(37,99,235,.15);
+    backdrop-filter:blur(10px);
+}
+
+.logo{
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    background:linear-gradient(
+    135deg,
+    #60A5FA,
+    #2563EB);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+h1{
+    color:#0F172A;
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#64748B;
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:10px;
+}
+
+input{
+    width:100%;
+    padding:16px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#F1F5F9;
+    font-size:15px;
+    transition:.3s;
+}
+
+input:focus{
+    background:white;
+    box-shadow:
+    0 0 0 3px rgba(59,130,246,.15);
+}
+
+.error-message{
+    color:#ef4444;
+    font-size:13px;
+    display:block;
+    margin-top:6px;
+}
+
+.input-error{
+    border:1px solid #ef4444 !important;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    margin-top: 10px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(
+    135deg,
+    #3B82F6,
+    #2563EB);
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:
+    0 12px 25px rgba(37,99,235,.25);
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:20px;
+    color:#64748B;
+}
+
+.bottom-text a{
+    text-decoration:none;
+    color:#2563EB;
+    font-weight:600;
+}
+
+.success-message{
+    text-align: center;
+    color:#22c55e;
+    margin-top:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="login-card">
+
+    <div class="logo">
+        O
+    </div>
+
+    <h1>Sign Up</h1>
+    <p class="subtitle">
+        hello, morning!
+    </p>
+
+    <div class="form-group">
+        <input
+        type="text"
+        id="username"
+        placeholder="Username">
+
+        <small
+        id="username_error"
+        class="error-message">
+        </small>
+    </div>
+
+    <div class="form-group">
+        <input
+        type="password"
+        id="password"
+        placeholder="Password">
+    </div>
+
+    <div class="form-group">
+        <input
+        type="password"
+        id="confirm_password"
+        placeholder="Confirm Password">
+
+        <small
+        id="password_error"
+        class="error-message">
+        </small>
+    </div>
+
+    <p id="success_message" class="success-message"></p>
+
+    <button onclick="signup()">
+        Sign Up
+    </button>
+
+    <div class="bottom-text">
+        Have an account?
+        <a href="sign-in.html">Sign In</a>
+    </div>
+
+</div>
+
+<!-- Controller -->
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://bbvwxsxntblwukjpfcqf.supabase.co',
+    'sb_publishable_Mx6l4Z3hDALxTeW6nIOYfA_xfWA-tVR'
+)
+
+window.signup = async () => {
+
+    document.getElementById('username_error').innerText = ''
+    document.getElementById('password_error').innerText = ''
+
+    document.getElementById('username')
+        .classList.remove('input-error')
+
+    document.getElementById('password')
+        .classList.remove('input-error')
+
+    document.getElementById('confirm_password')
+        .classList.remove('input-error')
+
+    // masukin username kamu, biar nanti bisa login
+    const username =
+        document.getElementById('username').value
+    // masukin password buat di daftarin
+    const password =
+        document.getElementById('password').value
+    // confirm password dulu ya, udah bener atau belum.
+    const confirm_password =
+        document.getElementById('confirm_password').value
+
+    // cek username sudah ada atau belum
+    const { data: existingUser, error: checkError } =
+        await supabase
+            .from('users')
+            .select('username')
+            .eq('username', username)
+            .maybeSingle()
+
+    if(checkError){
+        alert(checkError.message)
+        return
+    }
+
+    // username yang kamu masukin berarti udah digunain sama orang lain
+    if(existingUser){
+
+        document
+            .getElementById('username_error')
+            .innerText =
+            'Username sudah digunakan'
+
+        document
+            .getElementById('username')
+            .classList.add('input-error')
+
+        return
+    }
+
+    // username kamu belum di isi
+    if(username.trim() === ''){
+
+        document
+            .getElementById('username_error')
+            .innerText =
+            'Username wajib diisi'
+
+        document
+            .getElementById('username')
+            .classList.add('input-error')
+
+        return
+    }
+
+    // check password dulu takutnya gak sama...
+    if(password !== confirm_password){
+
+        document
+            .getElementById('password_error')
+            .innerText =
+            'Password tidak cocok'
+
+        document
+            .getElementById('password')
+            .classList.add('input-error')
+
+        document
+            .getElementById('confirm_password')
+            .classList.add('input-error')
+
+        return
+    }
+
+    // password kamu belum di isi
+    if(password.trim() === ''){
+
+        document
+            .getElementById('password_error')
+            .innerText =
+            'Password wajib diisi'
+
+        document
+            .getElementById('password')
+            .classList.add('input-error')
+
+        return
+    }
+
+    // System kalo misalnya klik Sign Up, berarti kamu udah berhasil daftar
+    const { data, error } = await supabase
+        .from('users')
+        .insert([
+            {
+                username: username,
+                password: password
+            }
+        ])
+
+    if(error){
+        alert(error.message)
+    }else{
+        document.getElementById('username').value = ''
+        document.getElementById('password').value = ''
+        document.getElementById('confirm_password').value = ''
+
+        document
+        .getElementById('success_message')
+        .innerText =
+        'Berhasil Cuy'
+    }
+}
+
+</script>
+
+</body>
+</html>
