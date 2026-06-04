@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sign In</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:110vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    radial-gradient(circle at top left,#60A5FA 0%,transparent 35%),
+    radial-gradient(circle at bottom right,#2563EB 0%,transparent 40%),
+    #F8FAFC;
+}
+
+.login-card{
+    width:400px;
+    background:#fff;
+    border-radius:28px;
+    padding:40px;
+    box-shadow:
+    0 20px 40px rgba(37,99,235,.15);
+    backdrop-filter:blur(10px);
+}
+
+.logo{
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    background:linear-gradient(
+    135deg,
+    #60A5FA,
+    #2563EB);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+h1{
+    color:#0F172A;
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#64748B;
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:10px;
+}
+
+input{
+    width:100%;
+    padding:16px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#F1F5F9;
+    font-size:15px;
+    transition:.3s;
+}
+
+input:focus{
+    background:white;
+    box-shadow:
+    0 0 0 3px rgba(59,130,246,.15);
+}
+
+.error-message{
+    color:#ef4444;
+    display:block;
+    margin-top:10px;
+}
+
+.input-error{
+    border:1px solid #ef4444 !important;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    margin-top: 10px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(
+    135deg,
+    #3B82F6,
+    #2563EB);
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:
+    0 12px 25px rgba(37,99,235,.25);
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:20px;
+    color:#64748B;
+}
+
+.bottom-text a{
+    text-decoration:none;
+    color:#2563EB;
+    font-weight:600;
+}
+
+.success-message{
+    text-align: center;
+    color:#22c55e;
+    margin-top:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="login-card">
+
+    <div class="logo">
+        O
+    </div>
+
+    <h1>Welcome Back</h1>
+    <p class="subtitle">
+        Sign In
+    </p>
+
+    <div class="form-group">
+        <input
+        type="text"
+        id="username"
+        placeholder="Username">
+    </div>
+
+    <div class="form-group">
+        <input
+        type="password"
+        id="password"
+        placeholder="Password">
+    </div>
+
+    <small
+    id="login_error"
+    class="error-message">
+    </small>
+
+    <p id="success_message" class="success-message"></p>
+
+    <button onclick="signin()">
+        Sign In
+    </button>
+
+    <div class="bottom-text">
+        Don't have an account?
+        <a href="sign-up.html">Sign Up</a>
+    </div>
+
+</div>
+
+<!-- Controller -->
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://bbvwxsxntblwukjpfcqf.supabase.co',
+    'sb_publishable_Mx6l4Z3hDALxTeW6nIOYfA_xfWA-tVR'
+)
+
+window.signin = async () => {
+
+    // hapus pesan lama
+    document
+        .getElementById('login_error')
+        .innerText = ''
+
+    document
+        .getElementById('success_message')
+        .innerText = ''
+
+    // ambil input
+    const username =
+        document.getElementById('username').value
+
+    const password =
+        document.getElementById('password').value
+
+    // validasi username
+    if(username.trim() === ''){
+
+        document
+            .getElementById('login_error')
+            .innerText =
+            'Username required'
+
+        return
+    }
+
+    // validasi password
+    if(password.trim() === ''){
+
+        document
+            .getElementById('login_error')
+            .innerText =
+            'Password required'
+
+        return
+    }
+
+    // cari user
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('username', username)
+        .maybeSingle()
+
+    if(error){
+
+        document
+            .getElementById('login_error')
+            .innerText =
+            error.message
+
+        return
+    }
+
+    // user tidak ditemukan
+    if(!data){
+
+        document
+            .getElementById('login_error')
+            .innerText =
+            'Username not found'
+
+        return
+    }
+
+    // password salah
+    if(data.password !== password){
+
+        document
+            .getElementById('login_error')
+            .innerText =
+            'Password incorrect'
+
+        return
+    }
+
+    // simpan aktivitas login
+    const { error: logError } = await supabase
+        .from('logs')
+        .insert([
+            {
+                id_users: data.id,
+                activity: 'Login account'
+            }
+        ])
+
+    if(logError){
+        console.log(logError)
+    }
+
+    // simpan session
+    localStorage.setItem(
+        'user_id',
+        data.id
+    )
+
+    localStorage.setItem(
+        'username',
+        data.username
+    )
+
+    // tampilkan sukses
+    document
+        .getElementById('success_message')
+        .innerText =
+        'Login success'
+
+    // redirect
+    setTimeout(() => {
+
+        window.location.href =
+            'dashboard-admin.html'
+
+    }, 500)
+}
+
+</script>
+
+</body>
+</html>

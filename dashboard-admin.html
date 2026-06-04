@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard - Admin</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(
+        circle at top left,
+        #60A5FA 0%,
+        transparent 35%
+    ),
+    radial-gradient(
+        circle at bottom right,
+        #2563EB 0%,
+        transparent 40%
+    ),
+    linear-gradient(
+        135deg,
+        #1D4ED8,
+        #3B82F6
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding: 40px;
+}
+
+/* MAIN CONTAINER */
+
+.dashboard{
+
+    width:1400px;
+    min-height:850px;
+
+    background:white;
+
+    border-radius:50px;
+
+    padding:60px;
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.15);
+
+    overflow:hidden;
+}
+
+/* NAVBAR */
+
+.navbar{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:50px;
+}
+
+.logo{
+
+    background:
+    linear-gradient(
+        135deg,
+        #60A5FA,
+        #2563EB
+    );
+
+    color:white;
+    padding:14px 30px;
+    border-radius:999px;
+    font-size:20px;
+    font-weight:700;
+}
+
+.menu{
+
+    display:flex;
+    gap:12px;
+}
+
+.menu a{
+
+    text-decoration:none;
+    color:#64748B;
+    padding:12px 18px;
+    border-radius:999px;
+    transition:.3s;
+}
+
+.menu a:hover{
+
+    background:#EFF6FF;
+    color:#2563EB;
+}
+
+.menu .active{
+
+    background:#EFF6FF;
+    color:#2563EB;
+    font-weight:600;
+}
+
+.profile{
+    background:#EFF6FF;
+    color:#2563EB;
+    padding:15px 20px;
+    border-radius:999px;
+    font-weight:600;
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    min-width: 150px;
+}
+
+.dropdown a {
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    color: #2563EB;
+}
+
+.dropdown a:hover {
+    background: #f0f0f0;
+}
+
+.profile:hover .dropdown {
+    display: block;
+}
+
+/* HERO */
+
+.hero{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:50px;
+}
+
+.hero-left{
+
+    max-width:650px;
+}
+
+.hero-left h1{
+
+    font-size:120px;
+    line-height:1;
+    color:#2563EB;
+}
+
+.hero-left p{
+
+    color:#64748B;
+    margin-top:15px;
+    font-size:18px;
+}
+
+.hero-left button{
+
+    margin-top:25px;
+    border:none;
+    background:
+    linear-gradient(
+        135deg,
+        #60A5FA,
+        #2563EB
+    );
+    color:white;
+    padding:16px 28px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.hero-right{
+
+    position:relative;
+}
+
+.blue-card{
+
+    width:380px;
+    height:300px;
+    border-radius:70px;
+    background:
+    linear-gradient(
+        135deg,
+        #60A5FA,
+        #2563EB
+    );
+
+    box-shadow:
+    0 20px 50px rgba(37,99,235,.35);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:100px;
+}
+
+.floating-card{
+
+    position:absolute;
+    bottom:-20px;
+    right:-20px;
+    background:white;
+    border-radius:25px;
+    padding:18px;
+    width:220px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+}
+
+.floating-card h4{
+
+    color:#2563EB;
+    margin-bottom:5px;
+}
+
+.floating-card p{
+
+    color:#64748B;
+    font-size:13px;
+}
+
+/* STATS */
+
+.cards{
+
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+
+    background:#F8FAFC;
+    border-radius:30px;
+    padding:25px;
+}
+
+.card-title{
+
+    color:#64748B;
+    margin-bottom:10px;
+}
+
+.card-value{
+
+    color:#2563EB;
+    font-size:38px;
+    font-weight:700;
+}
+
+/* ACTIVITY */
+
+.activity{
+
+    margin-top:25px;
+    background:#F8FAFC;
+    border-radius:30px;
+    padding:25px;
+}
+
+.activity h2{
+
+    color:#0F172A;
+    margin-bottom:20px;
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+
+    text-align:left;
+    padding:15px;
+    color:#64748B;
+}
+
+td{
+
+    padding:15px;
+    border-top:1px solid #E2E8F0;
+}
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 15px;
+        font-family: Arial, sans-serif;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #4f46e5;
+        color: white;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .pagination button:hover {
+        background: #3730a3;
+        transform: translateY(-1px);
+    }
+
+    .pagination button:active {
+        transform: scale(0.95);
+    }
+
+    #pageInfo {
+        font-weight: 600;
+        color: #333;
+    }
+
+@media(max-width:1200px){
+
+    .hero{
+
+        flex-direction:column;
+        gap:40px;
+    }
+
+    .hero-left h1{
+
+        font-size:70px;
+    }
+
+}
+
+/* TABLET */
+
+@media (max-width: 1024px){
+
+    .dashboard{
+        width:100%;
+        min-height:auto;
+        border-radius:35px;
+    }
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+        gap:40px;
+    }
+
+    .hero-left{
+        max-width:100%;
+    }
+
+    .hero-left h1{
+        font-size:70px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 15px;
+        font-family: Arial, sans-serif;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #4f46e5;
+        color: white;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .pagination button:hover {
+        background: #3730a3;
+        transform: translateY(-1px);
+    }
+
+    .pagination button:active {
+        transform: scale(0.95);
+    }
+
+    #pageInfo {
+        font-weight: 600;
+        color: #333;
+    }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .dashboard {
+        padding: 20px;
+        border-radius: 25px;
+    }
+
+    /* NAVBAR = 2 ROW LAYOUT */
+    .navbar {
+        display: flex;
+        flex-wrap: wrap; /* IMPORTANT: boleh turun */
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        gap: 10px;
+    }
+
+    /* ROW 1 */
+    .logo {
+        font-size: 16px;
+        padding: 10px 18px;
+        margin-right: 20px;
+    }
+
+    /* menu jadi inline 1 baris */
+    .menu {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .menu a {
+        font-size: 12px;
+        padding: 10px 20px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* profile juga satu baris */
+    .profile {
+        font-size: 15px;
+        flex-shrink: 0;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    #usernameText {
+        font-size: 13px;
+    }
+
+
+    /* HERO */
+    .hero-left h1 {
+        font-size: 48px;
+    }
+
+    .hero-left p {
+        font-size: 15px;
+    }
+
+    /* cards */
+    .card {
+        padding: 20px;
+    }
+
+    .card-value {
+        font-size: 28px;
+    }
+
+    /* table */
+    .activity {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    /* pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #4f46e5;
+        color: white;
+        font-weight: 600;
+    }
+
+    .pagination button:hover {
+        background: #3730a3;
+    }
+
+    #pageInfo {
+        font-weight: 600;
+        color: #333;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="navbar">
+        <div class="logo">
+            OMG
+        </div>
+
+        <div class="menu">
+            <a href="#" class="active">Home</a>
+            <a href="#">Users</a>
+            <a href="#">Apps</a>
+        </div>
+
+        <div class="profile" id="profileDropdown">
+            <span id="usernameText">username</span>
+
+            <div class="dropdown">
+                <a href="#" id="btnProfile">Profile</a>
+                <a href="#" id="btnLogout">Log out</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-left">
+            <h1>On My Game</h1>
+
+            <p>
+                Hai, selamat datang di website OMG!
+            </p>
+
+            <button>View Apps</button>
+        </div>
+
+        <div class="hero-right">
+            <div class="blue-card">
+                <b>OMG</b>
+                </div>
+            <div class="floating-card">
+                <h4>
+                    Name Post
+                </h4>
+                <p>
+                    Capt Post
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="card-title">
+                Total Users
+            </div>
+            <div class="card-value" id="totalUsers">
+                0 User
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">
+                Apps Entry
+            </div>
+            <div class="card-value">
+                0 Post
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">
+                Total Members
+            </div>
+            <div class="card-value">
+                0 Member
+            </div>
+        </div>
+    </div>
+
+    <div class="activity">
+        <h2>Recent Activity</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Activity</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="activityBody"></tbody>
+        </table>
+
+        <div class="pagination">
+            <button id="prevBtn">Prev</button>
+            <span id="pageInfo"></span>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+    
+</div>
+
+<script type="module">
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://bbvwxsxntblwukjpfcqf.supabase.co',
+    'sb_publishable_Mx6l4Z3hDALxTeW6nIOYfA_xfWA-tVR'
+)
+
+// jumlah pengguna
+async function loadTotalUsers() {
+
+    const { count, error } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+
+    if (error) {
+        console.log(error)
+        return
+    }
+
+    document.getElementById('totalUsers').innerText = `${count} User`
+}
+
+loadTotalUsers()
+
+// Loading logs data / activity
+let currentPage = 1
+const limit = 5
+
+async function loadActivity(page) {
+
+    const from = (page - 1) * limit
+    const to = from + limit - 1
+
+    const { data, error } = await supabase
+        .from('logs')
+        .select(`
+            activity,
+            created_at,
+            users (
+                username
+            )
+        `)
+        .order('created_at', { ascending: false })
+        .range(from, to)
+
+    if (error) {
+        console.log(error)
+        return
+    }
+
+    const tbody = document.getElementById('activityBody')
+    tbody.innerHTML = ''
+
+    data.forEach(item => {
+
+        const date = new Date(item.created_at)
+
+        const formattedDate =
+            String(date.getDate()).padStart(2, '0') + '-' +
+            String(date.getMonth() + 1).padStart(2, '0') + '-' +
+            date.getFullYear() + '-' +
+            String(date.getHours()).padStart(2, '0') + ':' +
+            String(date.getMinutes()).padStart(2, '0') + ':' +
+            String(date.getSeconds()).padStart(2, '0')
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.users?.username ?? '-'}</td>
+                <td>${item.activity}</td>
+                <td>${formattedDate}</td>
+            </tr>
+        `
+    })
+
+    document.getElementById('pageInfo').innerText = `Page ${page}`
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--
+        loadActivity(currentPage)
+    }
+})
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+    currentPage++
+    loadActivity(currentPage)
+})
+
+loadActivity(currentPage)
+
+// ini buat ambil username yang berhasil login sama system button logout
+document.addEventListener('DOMContentLoaded', () => {
+
+    const username = localStorage.getItem('username')
+
+    if (!username) {
+        window.location.href = 'sign-in.html'
+        return
+    }
+
+    const usernameEl = document.getElementById('usernameText')
+
+    if (usernameEl) {
+        usernameEl.innerText = username
+    }
+
+    const logoutBtn = document.getElementById('btnLogout')
+
+    if (!logoutBtn) return
+
+    logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault()
+
+        const userId = localStorage.getItem('user_id')
+        const username = localStorage.getItem('username')
+
+        // kalau belum ada session
+        if (!userId) {
+            window.location.href = 'sign-in.html'
+            return
+        }
+
+        // simpan log logout
+        const { error } = await supabase
+            .from('logs')
+            .insert([
+                {
+                    id_users: userId,
+                    activity: 'Logout account'
+                }
+            ])
+
+        if (error) {
+            console.log('Logout log error:', error)
+        }
+
+        // hapus session
+        localStorage.removeItem('user_id')
+        localStorage.removeItem('username')
+
+        // redirect ke login
+        window.location.href = 'sign-in.html'
+    })
+
+})
+</script>
+
+</body>
+</html>

@@ -96,10 +96,18 @@ input:focus{
     border:1px solid #ef4444 !important;
 }
 
+.password-row{
+    display:flex;
+    gap:10px;
+}
+
+.password-row .form-group{
+    flex:1;
+}
+
 button{
     width:100%;
     padding:16px;
-    margin-top: 10px;
     border:none;
     border-radius:14px;
     background:linear-gradient(
@@ -147,9 +155,9 @@ button:hover{
         O
     </div>
 
-    <h1>Sign Up</h1>
+    <h1>Create account</h1>
     <p class="subtitle">
-        hello, morning!
+        Sign Up
     </p>
 
     <div class="form-group">
@@ -164,24 +172,26 @@ button:hover{
         </small>
     </div>
 
-    <div class="form-group">
-        <input
-        type="password"
-        id="password"
-        placeholder="Password">
+    <div class="password-row">
+        <div class="form-group">
+            <input
+            type="password"
+            id="password"
+            placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <input
+            type="password"
+            id="confirm_password"
+            placeholder="Confirm Password">
+        </div>
     </div>
 
-    <div class="form-group">
-        <input
-        type="password"
-        id="confirm_password"
-        placeholder="Confirm Password">
-
-        <small
-        id="password_error"
-        class="error-message">
-        </small>
-    </div>
+    <small
+    id="password_error"
+    class="error-message">
+    </small>
 
     <p id="success_message" class="success-message"></p>
 
@@ -251,7 +261,7 @@ window.signup = async () => {
         document
             .getElementById('username_error')
             .innerText =
-            'Username sudah digunakan'
+            'Username is already exist'
 
         document
             .getElementById('username')
@@ -266,7 +276,7 @@ window.signup = async () => {
         document
             .getElementById('username_error')
             .innerText =
-            'Username wajib diisi'
+            'Username required'
 
         document
             .getElementById('username')
@@ -281,7 +291,7 @@ window.signup = async () => {
         document
             .getElementById('password_error')
             .innerText =
-            'Password tidak cocok'
+            'Password do not match'
 
         document
             .getElementById('password')
@@ -300,7 +310,7 @@ window.signup = async () => {
         document
             .getElementById('password_error')
             .innerText =
-            'Password wajib diisi'
+            'Password required'
 
         document
             .getElementById('password')
@@ -315,21 +325,42 @@ window.signup = async () => {
         .insert([
             {
                 username: username,
-                password: password
+                password: password,
+                id_roles: 1
             }
         ])
+        .select()
+        .single()
 
     if(error){
+
         alert(error.message)
+
     }else{
+
+        // Simpan aktivitas ke logs
+        await supabase
+            .from('logs')
+            .insert([
+                {
+                    id_users: data.id,
+                    activity: 'Create account'
+                }
+            ])
+
         document.getElementById('username').value = ''
         document.getElementById('password').value = ''
         document.getElementById('confirm_password').value = ''
 
         document
-        .getElementById('success_message')
-        .innerText =
-        'Berhasil Cuy'
+            .getElementById('success_message')
+            .innerText =
+            'Registration success'
+
+        setTimeout(() => {
+            window.location.href = 'sign-in.html'
+        }, 1000)
+
     }
 }
 
