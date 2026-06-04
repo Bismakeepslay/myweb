@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Sign Up</title>
-
 <style>
 
 *{
@@ -16,7 +14,7 @@
 }
 
 body{
-    min-height:110vh;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -24,6 +22,7 @@ body{
     radial-gradient(circle at top left,#60A5FA 0%,transparent 35%),
     radial-gradient(circle at bottom right,#2563EB 0%,transparent 40%),
     #F8FAFC;
+    padding: 20px;
 }
 
 .login-card{
@@ -31,8 +30,7 @@ body{
     background:#fff;
     border-radius:28px;
     padding:40px;
-    box-shadow:
-    0 20px 40px rgba(37,99,235,.15);
+    box-shadow: 0 20px 40px rgba(37,99,235,.15);
     backdrop-filter:blur(10px);
 }
 
@@ -40,10 +38,7 @@ body{
     width:60px;
     height:60px;
     border-radius:18px;
-    background:linear-gradient(
-    135deg,
-    #60A5FA,
-    #2563EB);
+    background:linear-gradient(135deg,#60A5FA,#2563EB);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -81,8 +76,7 @@ input{
 
 input:focus{
     background:white;
-    box-shadow:
-    0 0 0 3px rgba(59,130,246,.15);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
 }
 
 .error-message{
@@ -110,10 +104,7 @@ button{
     padding:16px;
     border:none;
     border-radius:14px;
-    background:linear-gradient(
-    135deg,
-    #3B82F6,
-    #2563EB);
+    background:linear-gradient(135deg,#3B82F6,#2563EB);
     color:white;
     font-size:15px;
     font-weight:600;
@@ -123,8 +114,7 @@ button{
 
 button:hover{
     transform:translateY(-2px);
-    box-shadow:
-    0 12px 25px rgba(37,99,235,.25);
+    box-shadow: 0 12px 25px rgba(37,99,235,.25);
 }
 
 .bottom-text{
@@ -140,9 +130,70 @@ button:hover{
 }
 
 .success-message{
-    text-align: center;
+    text-align:center;
     color:#22c55e;
     margin-top:10px;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .login-card {
+        width: 100%;
+        max-width: 460px;
+        padding: 36px 32px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    body {
+        padding: 30px;
+    }
+
+    .login-card {
+        width: 100%;
+        padding: 28px 20px;
+        border-radius: 22px;
+    }
+
+    .logo {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
+        border-radius: 14px;
+        margin-bottom: 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    input {
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+    /* password row jadi 1 kolom di mobile */
+    .password-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    button {
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+    .bottom-text {
+        font-size: 13px;
+    }
 }
 
 </style>
@@ -151,53 +202,29 @@ button:hover{
 
 <div class="login-card">
 
-    <div class="logo">
-        O
-    </div>
+    <div class="logo">O</div>
 
     <h1>Create account</h1>
-    <p class="subtitle">
-        Sign Up
-    </p>
+    <p class="subtitle">Sign Up</p>
 
     <div class="form-group">
-        <input
-        type="text"
-        id="username"
-        placeholder="Username">
-
-        <small
-        id="username_error"
-        class="error-message">
-        </small>
+        <input type="text" id="username" placeholder="Username">
+        <small id="username_error" class="error-message"></small>
     </div>
 
     <div class="password-row">
         <div class="form-group">
-            <input
-            type="password"
-            id="password"
-            placeholder="Password">
+            <input type="password" id="password" placeholder="Password">
         </div>
-
         <div class="form-group">
-            <input
-            type="password"
-            id="confirm_password"
-            placeholder="Confirm Password">
+            <input type="password" id="confirm_password" placeholder="Confirm Password">
         </div>
     </div>
 
-    <small
-    id="password_error"
-    class="error-message">
-    </small>
-
+    <small id="password_error" class="error-message"></small>
     <p id="success_message" class="success-message"></p>
 
-    <button onclick="signup()">
-        Sign Up
-    </button>
+    <button onclick="signup()">Sign Up</button>
 
     <div class="bottom-text">
         Have an account?
@@ -205,8 +232,6 @@ button:hover{
     </div>
 
 </div>
-
-<!-- Controller -->
 
 <script type="module">
 
@@ -222,145 +247,66 @@ window.signup = async () => {
 
     document.getElementById('username_error').innerText = ''
     document.getElementById('password_error').innerText = ''
+    document.getElementById('username').classList.remove('input-error')
+    document.getElementById('password').classList.remove('input-error')
+    document.getElementById('confirm_password').classList.remove('input-error')
 
-    document.getElementById('username')
-        .classList.remove('input-error')
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
+    const confirm_password = document.getElementById('confirm_password').value
 
-    document.getElementById('password')
-        .classList.remove('input-error')
+    const { data: existingUser, error: checkError } = await supabase
+        .from('users')
+        .select('username')
+        .eq('username', username)
+        .maybeSingle()
 
-    document.getElementById('confirm_password')
-        .classList.remove('input-error')
+    if(checkError){ alert(checkError.message); return }
 
-    // masukin username kamu, biar nanti bisa login
-    const username =
-        document.getElementById('username').value
-    // masukin password buat di daftarin
-    const password =
-        document.getElementById('password').value
-    // confirm password dulu ya, udah bener atau belum.
-    const confirm_password =
-        document.getElementById('confirm_password').value
-
-    // cek username sudah ada atau belum
-    const { data: existingUser, error: checkError } =
-        await supabase
-            .from('users')
-            .select('username')
-            .eq('username', username)
-            .maybeSingle()
-
-    if(checkError){
-        alert(checkError.message)
-        return
-    }
-
-    // username yang kamu masukin berarti udah digunain sama orang lain
     if(existingUser){
-
-        document
-            .getElementById('username_error')
-            .innerText =
-            'Username is already exist'
-
-        document
-            .getElementById('username')
-            .classList.add('input-error')
-
+        document.getElementById('username_error').innerText = 'Username is already exist'
+        document.getElementById('username').classList.add('input-error')
         return
     }
 
-    // username kamu belum di isi
     if(username.trim() === ''){
-
-        document
-            .getElementById('username_error')
-            .innerText =
-            'Username required'
-
-        document
-            .getElementById('username')
-            .classList.add('input-error')
-
+        document.getElementById('username_error').innerText = 'Username required'
+        document.getElementById('username').classList.add('input-error')
         return
     }
 
-    // check password dulu takutnya gak sama...
     if(password !== confirm_password){
-
-        document
-            .getElementById('password_error')
-            .innerText =
-            'Password do not match'
-
-        document
-            .getElementById('password')
-            .classList.add('input-error')
-
-        document
-            .getElementById('confirm_password')
-            .classList.add('input-error')
-
+        document.getElementById('password_error').innerText = 'Password do not match'
+        document.getElementById('password').classList.add('input-error')
+        document.getElementById('confirm_password').classList.add('input-error')
         return
     }
 
-    // password kamu belum di isi
     if(password.trim() === ''){
-
-        document
-            .getElementById('password_error')
-            .innerText =
-            'Password required'
-
-        document
-            .getElementById('password')
-            .classList.add('input-error')
-
+        document.getElementById('password_error').innerText = 'Password required'
+        document.getElementById('password').classList.add('input-error')
         return
     }
 
-    // System kalo misalnya klik Sign Up, berarti kamu udah berhasil daftar
     const { data, error } = await supabase
         .from('users')
-        .insert([
-            {
-                username: username,
-                password: password,
-                id_roles: 1
-            }
-        ])
+        .insert([{ username: username, password: password, id_roles: 1 }])
         .select()
         .single()
 
     if(error){
-
         alert(error.message)
-
-    }else{
-
-        // Simpan aktivitas ke logs
+    } else {
         await supabase
             .from('logs')
-            .insert([
-                {
-                    id_users: data.id,
-                    activity: 'Create account'
-                }
-            ])
+            .insert([{ id_users: data.id, activity: 'Create account' }])
 
         document.getElementById('username').value = ''
         document.getElementById('password').value = ''
         document.getElementById('confirm_password').value = ''
+        document.getElementById('success_message').innerText = 'Registration success'
 
-        document
-            .getElementById('success_message')
-            .innerText =
-            'Registration success'
-
-        setTimeout(() => {
-            window.location.href = 'sign-in.html'
-        }, 1000)
-
+        setTimeout(() => { window.location.href = 'sign-in.html' }, 1000)
     }
 }
 

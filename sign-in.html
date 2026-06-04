@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Sign In</title>
-
 <style>
 
 *{
@@ -16,7 +14,7 @@
 }
 
 body{
-    min-height:110vh;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -24,6 +22,7 @@ body{
     radial-gradient(circle at top left,#60A5FA 0%,transparent 35%),
     radial-gradient(circle at bottom right,#2563EB 0%,transparent 40%),
     #F8FAFC;
+    padding: 20px;
 }
 
 .login-card{
@@ -31,8 +30,7 @@ body{
     background:#fff;
     border-radius:28px;
     padding:40px;
-    box-shadow:
-    0 20px 40px rgba(37,99,235,.15);
+    box-shadow: 0 20px 40px rgba(37,99,235,.15);
     backdrop-filter:blur(10px);
 }
 
@@ -40,10 +38,7 @@ body{
     width:60px;
     height:60px;
     border-radius:18px;
-    background:linear-gradient(
-    135deg,
-    #60A5FA,
-    #2563EB);
+    background:linear-gradient(135deg,#60A5FA,#2563EB);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -81,8 +76,7 @@ input{
 
 input:focus{
     background:white;
-    box-shadow:
-    0 0 0 3px rgba(59,130,246,.15);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
 }
 
 .error-message{
@@ -98,13 +92,10 @@ input:focus{
 button{
     width:100%;
     padding:16px;
-    margin-top: 10px;
+    margin-top:10px;
     border:none;
     border-radius:14px;
-    background:linear-gradient(
-    135deg,
-    #3B82F6,
-    #2563EB);
+    background:linear-gradient(135deg,#3B82F6,#2563EB);
     color:white;
     font-size:15px;
     font-weight:600;
@@ -114,8 +105,7 @@ button{
 
 button:hover{
     transform:translateY(-2px);
-    box-shadow:
-    0 12px 25px rgba(37,99,235,.25);
+    box-shadow: 0 12px 25px rgba(37,99,235,.25);
 }
 
 .bottom-text{
@@ -131,9 +121,65 @@ button:hover{
 }
 
 .success-message{
-    text-align: center;
+    text-align:center;
     color:#22c55e;
     margin-top:10px;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .login-card {
+        width: 100%;
+        max-width: 460px;
+        padding: 36px 32px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    body {
+        padding: 30px;
+        align-items: center;
+    }
+
+    .login-card {
+        width: 100%;
+        padding: 28px 20px;
+        border-radius: 22px;
+    }
+
+    .logo {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
+        border-radius: 14px;
+        margin-bottom: 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    input {
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+    button {
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+    .bottom-text {
+        font-size: 13px;
+    }
 }
 
 </style>
@@ -142,39 +188,23 @@ button:hover{
 
 <div class="login-card">
 
-    <div class="logo">
-        O
-    </div>
+    <div class="logo">O</div>
 
     <h1>Welcome Back</h1>
-    <p class="subtitle">
-        Sign In
-    </p>
+    <p class="subtitle">Sign In</p>
 
     <div class="form-group">
-        <input
-        type="text"
-        id="username"
-        placeholder="Username">
+        <input type="text" id="username" placeholder="Username">
     </div>
 
     <div class="form-group">
-        <input
-        type="password"
-        id="password"
-        placeholder="Password">
+        <input type="password" id="password" placeholder="Password">
     </div>
 
-    <small
-    id="login_error"
-    class="error-message">
-    </small>
-
+    <small id="login_error" class="error-message"></small>
     <p id="success_message" class="success-message"></p>
 
-    <button onclick="signin()">
-        Sign In
-    </button>
+    <button onclick="signin()">Sign In</button>
 
     <div class="bottom-text">
         Don't have an account?
@@ -182,8 +212,6 @@ button:hover{
     </div>
 
 </div>
-
-<!-- Controller -->
 
 <script type="module">
 
@@ -197,45 +225,22 @@ const supabase = createClient(
 
 window.signin = async () => {
 
-    // hapus pesan lama
-    document
-        .getElementById('login_error')
-        .innerText = ''
+    document.getElementById('login_error').innerText = ''
+    document.getElementById('success_message').innerText = ''
 
-    document
-        .getElementById('success_message')
-        .innerText = ''
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
 
-    // ambil input
-    const username =
-        document.getElementById('username').value
-
-    const password =
-        document.getElementById('password').value
-
-    // validasi username
     if(username.trim() === ''){
-
-        document
-            .getElementById('login_error')
-            .innerText =
-            'Username required'
-
+        document.getElementById('login_error').innerText = 'Username required'
         return
     }
 
-    // validasi password
     if(password.trim() === ''){
-
-        document
-            .getElementById('login_error')
-            .innerText =
-            'Password required'
-
+        document.getElementById('login_error').innerText = 'Password required'
         return
     }
 
-    // cari user
     const { data, error } = await supabase
         .from('users')
         .select('*')
@@ -243,74 +248,33 @@ window.signin = async () => {
         .maybeSingle()
 
     if(error){
-
-        document
-            .getElementById('login_error')
-            .innerText =
-            error.message
-
+        document.getElementById('login_error').innerText = error.message
         return
     }
 
-    // user tidak ditemukan
     if(!data){
-
-        document
-            .getElementById('login_error')
-            .innerText =
-            'Username not found'
-
+        document.getElementById('login_error').innerText = 'Username not found'
         return
     }
 
-    // password salah
     if(data.password !== password){
-
-        document
-            .getElementById('login_error')
-            .innerText =
-            'Password incorrect'
-
+        document.getElementById('login_error').innerText = 'Password incorrect'
         return
     }
 
-    // simpan aktivitas login
     const { error: logError } = await supabase
         .from('logs')
-        .insert([
-            {
-                id_users: data.id,
-                activity: 'Login account'
-            }
-        ])
+        .insert([{ id_users: data.id, activity: 'Login account' }])
 
-    if(logError){
-        console.log(logError)
-    }
+    if(logError) console.log(logError)
 
-    // simpan session
-    localStorage.setItem(
-        'user_id',
-        data.id
-    )
+    localStorage.setItem('user_id', data.id)
+    localStorage.setItem('username', data.username)
 
-    localStorage.setItem(
-        'username',
-        data.username
-    )
+    document.getElementById('success_message').innerText = 'Login success'
 
-    // tampilkan sukses
-    document
-        .getElementById('success_message')
-        .innerText =
-        'Login success'
-
-    // redirect
     setTimeout(() => {
-
-        window.location.href =
-            'dashboard-admin.html'
-
+        window.location.href = 'dashboard-admin.html'
     }, 500)
 }
 
