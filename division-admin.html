@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set Division Name</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left, #60A5FA 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #2563EB 0%, transparent 40%),
+    linear-gradient(135deg, #1D4ED8, #3B82F6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 40px;
+}
+
+/* MAIN CONTAINER */
+.dashboard{
+    width:1400px;
+    min-height:850px;
+    background:white;
+    border-radius:50px;
+    padding:60px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.15);
+    overflow:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:50px;
+}
+
+.logo{
+    background: linear-gradient(135deg, #60A5FA, #2563EB);
+    color:white;
+    padding:14px 30px;
+    border-radius:999px;
+    font-size:20px;
+    font-weight:700;
+}
+
+.menu{
+    display:flex;
+    gap:12px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#64748B;
+    padding:12px 18px;
+    border-radius:999px;
+    transition:.3s;
+}
+
+.menu a:hover{
+    background:#EFF6FF;
+    color:#2563EB;
+}
+
+.menu .active{
+    background:#EFF6FF;
+    color:#2563EB;
+    font-weight:600;
+}
+
+.profile{
+    background:#EFF6FF;
+    color:#2563EB;
+    padding:15px 20px;
+    border-radius:999px;
+    font-weight:600;
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    min-width: 150px;
+    z-index: 100;
+}
+
+.dropdown a {
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    color: #2563EB;
+}
+
+.dropdown a:hover {
+    background: #f0f0f0;
+}
+
+.profile:hover .dropdown {
+    display: block;
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:50px;
+}
+
+.hero-left{
+    max-width:650px;
+}
+
+.hero-left h1{
+    font-size:120px;
+    line-height:1;
+    color:#2563EB;
+}
+
+.hero-left p{
+    color:#64748B;
+    margin-top:15px;
+    font-size:18px;
+}
+
+.division-wrapper{
+    margin-bottom:30px;
+}
+
+.division-form-card{
+    background:#F8FAFC;
+    padding:30px;
+    border-radius:30px;
+}
+
+.division-form-card h2{
+    color:#2563EB;
+    margin-bottom:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.form-group label{
+    color:#475569;
+    font-weight:600;
+}
+
+.form-group input{
+    padding:15px;
+    border:2px solid #E2E8F0;
+    border-radius:15px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+.form-group input:focus{
+    border-color:#3B82F6;
+}
+
+.error-message{
+    color:#ef4444;
+    display:block;
+}
+
+.input-error{
+    border:1px solid #ef4444 !important;
+}
+
+.saveBtn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#3B82F6,#2563EB);
+    color:white;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.saveBtn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 25px rgba(37,99,235,.25);
+}
+.success-message{
+    text-align:center;
+    color:#22c55e;
+    margin-bottom:10px;
+}
+
+/* division-list */
+.division-list{
+    margin-top:25px;
+    background:#F8FAFC;
+    border-radius:30px;
+    padding:25px;
+}
+
+.division-list h2{
+    color:#0F172A;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    padding:15px;
+    color:#64748B;
+}
+
+.action-btn{
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.edit-btn{
+    background:#DBEAFE;
+    color:#2563EB;
+}
+
+.delete-btn{
+    background:#FEE2E2;
+    color:#DC2626;
+}
+
+td{
+    padding:15px;
+    border-top:1px solid #E2E8F0;
+}
+
+.action-btn{
+    transition:.25s;
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+}
+
+.edit-btn:hover{
+    background:#BFDBFE;
+}
+
+.delete-btn:hover{
+    background:#FECACA;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #4f46e5;
+    color: white;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.pagination button:hover {
+    background: #3730a3;
+    transform: translateY(-1px);
+}
+
+.pagination button:active {
+    transform: scale(0.95);
+}
+
+#pageInfo {
+    font-weight: 600;
+    color: #333;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+td:last-child{
+    display:flex;
+    gap:8px;
+}
+
+.action-btn{
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* TABLET */
+@media (max-width: 1200px){
+    .dashboard{
+        width:100%;
+        min-height:auto;
+        border-radius:35px;
+    }
+    .hero{
+        flex-direction:column;
+        text-align:center;
+        gap:40px;
+    }
+    .hero-left{
+        max-width:100%;
+    }
+    .hero-left h1{
+        font-size:70px;
+    }
+
+    .action-btn{
+        transition:.25s;
+    }
+
+    .action-btn:hover{
+        transform:translateY(-2px);
+    }
+
+    .edit-btn:hover{
+        background:#BFDBFE;
+    }
+
+    .delete-btn:hover{
+        background:#FECACA;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    body {
+        padding: 16px;
+        align-items: flex-start;
+    }
+
+    .dashboard {
+        padding: 20px 16px 28px;
+        border-radius: 30px;
+        width: 100%;
+        min-height: auto;
+    }
+
+    /* ── NAVBAR: 2-row via flex-wrap + order
+    Baris 1: logo (kiri) + profile (kanan)
+    Baris 2: menu melebar penuh              */
+    .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 28px;
+    }
+
+    /* logo → baris 1 kiri */
+    .logo {
+        order: 1;
+        font-size: 15px;
+        padding: 10px 20px;
+    }
+
+    /* profile → baris 1 kanan */
+    .profile {
+        order: 2;
+        margin-left: auto;
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+
+    /* menu → baris 2, lebar penuh */
+    .menu {
+        order: 3;
+        flex-basis: 100%;
+        display: flex;
+        gap: 6px;
+    }
+
+    .menu a {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        padding: 9px 6px;
+        border-radius: 999px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+        flex-direction: column;
+        gap: 28px;
+        margin-bottom: 28px;
+        text-align: center;
+    }
+
+    .hero-left h1 {
+        font-size: 42px;
+        line-height: 1.1;
+    }
+
+    .hero-left p {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .division-form-card{
+        padding:20px;
+        border-radius:20px;
+    }
+
+    .form-group input{
+        padding:14px;
+        font-size:14px;
+    }
+
+    .division-list{
+        overflow:visible;
+    }
+
+    table{
+        min-width:650px;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+
+    .action-btn{
+        transition:.25s;
+    }
+
+    .action-btn:hover{
+        transform:translateY(-2px);
+    }
+
+    .edit-btn:hover{
+        background:#BFDBFE;
+    }
+
+    .delete-btn:hover{
+        background:#FECACA;
+    }
+
+    .pagination button {
+        padding: 7px 14px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="navbar">
+
+        <div class="logo">OMG</div>
+
+        <div class="menu">
+            <a href="dashboard-admin.html">Home</a>
+            <a href="users-admin.html">Users</a>
+            <a href="apps-admin.html">Apps</a>
+            <a href="setting-admin.html" class="active">Setting</a>
+        </div>
+
+        <div class="profile" id="profileDropdown">
+            <span id="usernameText">username</span>
+            <div class="dropdown">
+                <a href="profile-admin.html" id="btnProfile">Profile</a>
+                <a href="#" id="btnLogout">Log out</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hero">
+        <div class="hero-left">
+            <h1>On My Game</h1>
+            <p>Set Division Name</p>
+        </div>
+    </div>
+
+    <div class="division-wrapper">
+        <div class="division-form-card">
+            <h2 id="formTitle">Add Division</h2>
+                <form id="divisionForm">
+                    <input
+                        type="hidden"
+                        id="divisionId">
+
+                    <div class="form-group">
+                        <label>Division Name</label>
+                        <input type="text" id="division" placeholder="Input Division Name">
+                        <small id="division_error" class="error-message"></small>
+                    </div>
+
+                    <small id="save_error" class="error-message"></small>
+                    <p id="success_message" class="success-message"></p>
+
+                    <button type="button" class="saveBtn" onclick="save_division()">Save Division</button>
+                </form>
+            </div>
+        </div>
+
+    <div class="division-list">
+        <h2>Division List</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="100">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="activityBody"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button id="prevBtn">Prev</button>
+            <span id="pageInfo"></span>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+
+</div>
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://bbvwxsxntblwukjpfcqf.supabase.co',
+    'sb_publishable_Mx6l4Z3hDALxTeW6nIOYfA_xfWA-tVR'
+)
+
+const rowsPerPage = 5
+
+let currentPage = 1
+let divisionData = []
+
+async function load_division(){
+
+    const { data, error } = await supabase
+        .from('division')
+        .select('*')
+        .order('id', { ascending:false })
+
+    if(error){
+        console.error(error)
+        return
+    }
+
+    divisionData = data
+
+    renderDivision()
+}
+
+function renderDivision(){
+
+    const tbody =
+        document.getElementById('activityBody')
+
+    tbody.innerHTML = ''
+
+    const start =
+        (currentPage - 1) * rowsPerPage
+
+    const end =
+        start + rowsPerPage
+
+    const paginatedData =
+        divisionData.slice(start, end)
+
+    paginatedData.forEach(item => {
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+
+                <td>
+                    <button
+                        class="action-btn edit-btn"
+                        onclick="editDivision(${item.id})">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                    </button>
+
+                    <button
+                        class="action-btn delete-btn"
+                        onclick="deleteDivision(${item.id})">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </button>
+                </td>
+            </tr>
+        `
+
+    })
+
+    updatePagination()
+}
+
+function updatePagination(){
+
+    const totalPages =
+        Math.ceil(
+            divisionData.length / rowsPerPage
+        )
+
+    document.getElementById('pageInfo')
+        .innerText =
+        `Page ${currentPage} of ${totalPages || 1}`
+
+    document.getElementById('prevBtn')
+        .disabled =
+        currentPage === 1
+
+    document.getElementById('nextBtn')
+        .disabled =
+        currentPage === totalPages ||
+        totalPages === 0
+}
+
+document
+    .getElementById('prevBtn')
+    .addEventListener('click', () => {
+
+        if(currentPage > 1){
+
+            currentPage--
+
+            renderDivision()
+        }
+
+})
+
+document
+    .getElementById('nextBtn')
+    .addEventListener('click', () => {
+
+        const totalPages =
+            Math.ceil(
+                divisionData.length / rowsPerPage
+            )
+
+        if(currentPage < totalPages){
+
+            currentPage++
+
+            renderDivision()
+        }
+
+})
+
+load_division()
+
+window.save_division = async () => {
+
+    document.getElementById('success_message').innerText = ''
+
+    const divisionInput = document.getElementById('division')
+    const name = divisionInput.value.trim()
+
+    // VALIDASI INPUT KOSONG
+    if(name === ''){
+        document.getElementById('division_error').innerText = 'Division name required'
+        divisionInput.classList.add('input-error')
+        return
+    }
+
+    // CEK APAKAH DIVISION SUDAH ADA
+    const {
+        data: existingDivision,
+        error: checkError
+    } = await supabase
+        .from('division')
+        .select('id')
+        .eq('name', name)
+        .maybeSingle()
+
+    // JIKA ADA ERROR DARI SUPABASE
+    if(checkError){
+        alert(checkError.message)
+        return
+    }
+
+    // JIKA DIVISION SUDAH ADA
+    if(existingDivision){
+        document.getElementById('division_error').innerText = 'Division name already exists'
+        divisionInput.classList.add('input-error')
+        return
+    }
+
+    // SIMPAN DIVISION BARU
+    const {
+        data,
+        error
+    } = await supabase
+        .from('division')
+        .insert([{ name }])
+        .select()
+        .single()
+
+    // JIKA GAGAL MENYIMPAN
+    if(error){
+        alert(error.message)
+        return
+    }
+
+    // AMBIL USER YANG SEDANG LOGIN
+    const {
+        data: { user }
+    } = await supabase.auth.getUser()
+
+    // SIMPAN LOG AKTIVITAS
+    if(user){
+        await supabase
+            .from('logs')
+            .insert([{
+                id_users: user.id,
+                activity: `Add Division '${name}'`
+            }])
+    }
+
+    // HAPUS ERROR KARENA SUDAH BERHASIL
+    document.getElementById('division_error').innerText = ''
+    divisionInput.classList.remove('input-error')
+
+    // KOSONGKAN INPUT
+    divisionInput.value = ''
+
+    // TAMPILKAN PESAN BERHASIL
+    document.getElementById('success_message').innerText = 'Add division success'
+
+    // HILANGKAN PESAN BERHASIL
+    setTimeout(() => {
+        document.getElementById('success_message').innerText = ''
+    }, 3000)
+}
+
+// ini buat logout, jangan di otak atik lagi
+document.addEventListener('DOMContentLoaded', async () => {
+
+    const username =
+    localStorage.getItem('username')
+
+    if (!username) {
+
+        window.location.href =
+        'sign-in.html'
+
+        return
+    }
+
+    const usernameEl =
+    document.getElementById('usernameText')
+
+    if (usernameEl)
+        usernameEl.innerText = username
+
+    const logoutBtn =
+    document.getElementById('btnLogout')
+
+    if (logoutBtn) {
+
+        logoutBtn.addEventListener(
+            'click',
+            async (e) => {
+
+                e.preventDefault()
+
+                const userId =
+                localStorage.getItem('user_id')
+
+                if (!userId) {
+
+                    window.location.href =
+                    'sign-in.html'
+
+                    return
+                }
+
+                await supabase
+                    .from('logs')
+                    .insert([
+                        {
+                            id_users: userId,
+                            activity: 'Logout account'
+                        }
+                    ])
+
+                localStorage.removeItem('user_id')
+                localStorage.removeItem('username')
+
+                window.location.href =
+                'sign-in.html'
+            }
+        )
+    }
+
+    loadDivision()
+})
+
+</script>
+
+</body>
+</html>

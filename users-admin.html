@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - Admin</title>
+<title>Users - Admin</title>
 <style>
 
 *{
@@ -478,8 +478,8 @@ td{
         <div class="logo">OMG</div>
 
         <div class="menu">
-            <a href="dashboard-admin.html" class="active">Home</a>
-            <a href="users-admin.html">Users</a>
+            <a href="dashboard-admin.html">Home</a>
+            <a href="users-admin.html" class="active">Users</a>
             <a href="apps-admin.html">Apps</a>
             <a href="setting-admin.html">Setting</a>
         </div>
@@ -487,7 +487,7 @@ td{
         <div class="profile" id="profileDropdown">
             <span id="usernameText">username</span>
             <div class="dropdown">
-                <a href="#" id="btnProfile">Profile</a>
+                <a href="profile-admin.html" id="btnProfile">Profile</a>
                 <a href="#" id="btnLogout">Log out</a>
             </div>
         </div>
@@ -497,45 +497,35 @@ td{
     <div class="hero">
         <div class="hero-left">
             <h1>On My Game</h1>
-            <p>Hai, selamat datang di website OMG!</p>
-            <button>View Apps</button>
-        </div>
-
-        <div class="hero-right">
-            <div class="blue-card">
-                <b>OMG</b>
-            </div>
-            <div class="floating-card">
-                <h4>Name Post</h4>
-                <p>Capt Post</p>
-            </div>
+            <p>Set role for the user</p>
+            <button>Update user</button>
         </div>
     </div>
 
     <div class="cards">
         <div class="card">
-            <div class="card-title">Total Users</div>
-            <div class="card-value" id="totalUsers">0 User</div>
+            <div class="card-title">Total Member</div>
+            <div class="card-value" id="totalUsers">0 Member</div>
         </div>
         <div class="card">
-            <div class="card-title">Apps Entry</div>
-            <div class="card-value">0 Post</div>
+            <div class="card-title">Total Admin</div>
+            <div class="card-value">0 Admin</div>
         </div>
         <div class="card">
-            <div class="card-title">Total Members</div>
-            <div class="card-value">0 Member</div>
+            <div class="card-title">Total User</div>
+            <div class="card-value">0 User</div>
         </div>
     </div>
 
     <div class="activity">
-        <h2>Recent Activity</h2>
+        <h2>Set up user</h2>
 
         <table>
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Activity</th>
-                    <th>Date</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Role</th>
                 </tr>
             </thead>
             <tbody id="activityBody"></tbody>

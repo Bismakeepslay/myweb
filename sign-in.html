@@ -195,10 +195,12 @@ button:hover{
 
     <div class="form-group">
         <input type="text" id="username" placeholder="Username">
+        <small id="username_error" class="error-message"></small>
     </div>
 
     <div class="form-group">
         <input type="password" id="password" placeholder="Password">
+        <small id="password_error" class="error-message"></small>
     </div>
 
     <small id="login_error" class="error-message"></small>
@@ -225,6 +227,8 @@ const supabase = createClient(
 
 window.signin = async () => {
 
+    document.getElementById('username_error').innerText = ''
+    document.getElementById('password_error').innerText = ''
     document.getElementById('login_error').innerText = ''
     document.getElementById('success_message').innerText = ''
 
@@ -232,12 +236,12 @@ window.signin = async () => {
     const password = document.getElementById('password').value
 
     if(username.trim() === ''){
-        document.getElementById('login_error').innerText = 'Username required'
+        document.getElementById('username_error').innerText = 'Username required'
         return
     }
 
     if(password.trim() === ''){
-        document.getElementById('login_error').innerText = 'Password required'
+        document.getElementById('password_error').innerText = 'Password required'
         return
     }
 
@@ -253,12 +257,12 @@ window.signin = async () => {
     }
 
     if(!data){
-        document.getElementById('login_error').innerText = 'Username not found'
+        document.getElementById('username_error').innerText = 'Username not found'
         return
     }
 
     if(data.password !== password){
-        document.getElementById('login_error').innerText = 'Password incorrect'
+        document.getElementById('password_error').innerText = 'Password incorrect'
         return
     }
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - Admin</title>
+<title>Setting - Admin</title>
 <style>
 
 *{
@@ -276,16 +276,6 @@ td{
 
 /* TABLET */
 @media (max-width: 1200px){
-    .hero{
-        flex-direction:column;
-        gap:40px;
-    }
-    .hero-left h1{
-        font-size:70px;
-    }
-}
-
-@media (max-width: 1024px){
     .dashboard{
         width:100%;
         min-height:auto;
@@ -323,8 +313,8 @@ td{
     }
 
     /* ── NAVBAR: 2-row via flex-wrap + order
-       Baris 1: logo (kiri) + profile (kanan)
-       Baris 2: menu melebar penuh              */
+    Baris 1: logo (kiri) + profile (kanan)
+    Baris 2: menu melebar penuh              */
     .navbar {
         display: flex;
         flex-wrap: wrap;
@@ -435,6 +425,16 @@ td{
         border-radius: 20px;
     }
 
+    .card button {
+        border: none;
+        background: linear-gradient(135deg, #60A5FA, #2563EB);
+        color:white;
+        padding: 13px 20px;
+        border-radius: 999px;
+        cursor:pointer;
+        font-weight:600;
+    }
+
     .card-value {
         font-size: 28px;
     }
@@ -478,16 +478,16 @@ td{
         <div class="logo">OMG</div>
 
         <div class="menu">
-            <a href="dashboard-admin.html" class="active">Home</a>
+            <a href="dashboard-admin.html">Home</a>
             <a href="users-admin.html">Users</a>
             <a href="apps-admin.html">Apps</a>
-            <a href="setting-admin.html">Setting</a>
+            <a href="setting-admin.html" class="active">Setting</a>
         </div>
 
         <div class="profile" id="profileDropdown">
             <span id="usernameText">username</span>
             <div class="dropdown">
-                <a href="#" id="btnProfile">Profile</a>
+                <a href="profile-admin.html" id="btnProfile">Profile</a>
                 <a href="#" id="btnLogout">Log out</a>
             </div>
         </div>
@@ -497,8 +497,8 @@ td{
     <div class="hero">
         <div class="hero-left">
             <h1>On My Game</h1>
-            <p>Hai, selamat datang di website OMG!</p>
-            <button>View Apps</button>
+            <p>Setting page</p>
+            <button>Upload new post</button>
         </div>
 
         <div class="hero-right">
@@ -514,27 +514,28 @@ td{
 
     <div class="cards">
         <div class="card">
-            <div class="card-title">Total Users</div>
-            <div class="card-value" id="totalUsers">0 User</div>
+            <div class="card-title">Logos</div>
+            <button>Upload here</button>
         </div>
         <div class="card">
-            <div class="card-title">Apps Entry</div>
-            <div class="card-value">0 Post</div>
+            <div class="card-title">Division</div>
+            <button onclick="window.location.href='division-admin.html'">
+                Set Division Role
+            </button>
         </div>
         <div class="card">
-            <div class="card-title">Total Members</div>
-            <div class="card-value">0 Member</div>
+            <div class="card-title">Key Setting</div>
+            <div class="card-value"><button>Set key logo</button></div>
         </div>
     </div>
 
     <div class="activity">
-        <h2>Recent Activity</h2>
-
+        <h2>Logo updated</h2>
         <table>
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Activity</th>
+                    <th>Preview</th>
+                    <th>Name</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -559,66 +560,7 @@ const supabase = createClient(
     'sb_publishable_Mx6l4Z3hDALxTeW6nIOYfA_xfWA-tVR'
 )
 
-async function loadTotalUsers() {
-    const { count, error } = await supabase
-        .from('users')
-        .select('*', { count: 'exact', head: true })
-    if (error) { console.log(error); return }
-    document.getElementById('totalUsers').innerText = `${count} User`
-}
-
-loadTotalUsers()
-
-let currentPage = 1
-const limit = 5
-
-async function loadActivity(page) {
-    const from = (page - 1) * limit
-    const to = from + limit - 1
-
-    const { data, error } = await supabase
-        .from('logs')
-        .select(`activity, created_at, users ( username )`)
-        .order('created_at', { ascending: false })
-        .range(from, to)
-
-    if (error) { console.log(error); return }
-
-    const tbody = document.getElementById('activityBody')
-    tbody.innerHTML = ''
-
-    data.forEach(item => {
-        const date = new Date(item.created_at)
-        const formattedDate =
-            String(date.getDate()).padStart(2, '0') + '-' +
-            String(date.getMonth() + 1).padStart(2, '0') + '-' +
-            date.getFullYear() + ' ' +
-            String(date.getHours()).padStart(2, '0') + ':' +
-            String(date.getMinutes()).padStart(2, '0') + ':' +
-            String(date.getSeconds()).padStart(2, '0')
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${item.users?.username ?? '-'}</td>
-                <td>${item.activity}</td>
-                <td>${formattedDate}</td>
-            </tr>
-        `
-    })
-
-    document.getElementById('pageInfo').innerText = `Page ${page}`
-}
-
-document.getElementById('prevBtn').addEventListener('click', () => {
-    if (currentPage > 1) { currentPage--; loadActivity(currentPage) }
-})
-
-document.getElementById('nextBtn').addEventListener('click', () => {
-    currentPage++; loadActivity(currentPage)
-})
-
-loadActivity(currentPage)
-
+// ini buat logout ya
 document.addEventListener('DOMContentLoaded', () => {
     const username = localStorage.getItem('username')
     if (!username) { window.location.href = 'sign-in.html'; return }
